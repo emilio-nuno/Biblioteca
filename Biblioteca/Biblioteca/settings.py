@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalogo.apps.CatalogoConfig',
+    'safedelete',
+    'django_seed',
 ]
 
 MIDDLEWARE = [
