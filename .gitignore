@@ -509,3 +509,4 @@ cython_debug/
 # Archivos de entorno virtual
 pyvenv.cfg
 
+.idea
