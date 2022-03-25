@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from datetime import date
 from safedelete.models import SafeDeleteModel
 
+#TODO: Arreglar el bug donde la instancia de libro no deja eliminar el libro aunque se encuentre la instanca eliminada
 class Autor(SafeDeleteModel):
     """Model representing an author."""
     _safedelete_policy = safedelete.models.SOFT_DELETE
