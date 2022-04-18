@@ -9,7 +9,6 @@ from safedelete.models import SafeDeleteModel
 #TODO: Arreglar el bug donde la instancia de libro no deja eliminar el libro aunque se encuentre la instanca eliminada
 class Autor(SafeDeleteModel):
     """Model representing an author."""
-    _safedelete_policy = safedelete.models.SOFT_DELETE
 
     primer_nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
@@ -29,7 +28,6 @@ class Autor(SafeDeleteModel):
 
 class Genero(SafeDeleteModel):
     """Un modelo que representa el género de un libro."""
-    _safedelete_policy = safedelete.models.SOFT_DELETE
 
     nombre = models.CharField(max_length=200, help_text='Inserta un género de libro (e.g. Ciencia Ficción)')
 
@@ -40,17 +38,17 @@ class Genero(SafeDeleteModel):
 
 class Libro(SafeDeleteModel):
     """Modelo que representa a un libro (pero no una copia específica)."""
-    _safedelete_policy = safedelete.models.SOFT_DELETE
+    _safedelete_policy = safedelete.models.SOFT_DELETE_CASCADE
 
     titulo = models.CharField(max_length=200)
 
-    author = models.ForeignKey(Autor, on_delete=models.SET_NULL, null=True)
+    autor = models.ForeignKey(Autor, on_delete=models.SET_NULL, null=True)
 
     resumen = models.TextField(max_length=1000, help_text='Inserta una breve descripción del libro')
     isbn = models.CharField('ISBN', max_length=13, unique=True,
                             help_text='13 caracteres <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
 
-    genero = models.ManyToManyField(Genero, help_text='Selecciona uno género para este libro')
+    genero = models.ManyToManyField(Genero, help_text='Selecciona uno o varios géneros para este libro')
 
     def __str__(self):
         """Cadena que representa al modelo."""
@@ -63,11 +61,10 @@ class Libro(SafeDeleteModel):
 
 class InstanciaLibro(SafeDeleteModel):
     """Modelo que representa una copia específica de un libro (e.g. que puede ser prestado de la biblioteca)."""
-    _safedelete_policy = safedelete.models.SOFT_DELETE
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           help_text='Identificador único para este libro particular en toda la biblioteca')
-    libro = models.ForeignKey('Libro', on_delete=models.RESTRICT, null=True)
+    libro = models.ForeignKey('Libro', on_delete=models.CASCADE, null=True)
     sello = models.CharField(max_length=200)
     fecha_entrega = models.DateField(null=True, blank=True)
     prestatario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
