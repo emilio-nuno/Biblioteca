@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>biblioteca</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md">
+        <div class="container-fluid"><a class="navbar-brand" href="#">Biblioteca</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="#">Página Principal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Todos los Libros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Todos los Autores</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="text-center">
+        <h1>Página Principal de la Biblioteca</h1>
+        <p>Bienvenido a la aplicación web de la biblioteca, desarrollada por Emilio<br></p>
+        <p>Se encuentran los siguientes registros en la base de datos:</p>
+    </div>
+    <div class="d-flex justify-content-center">
+        <ul>
+            <li>Libros: {{ num_libros }}</li>
+            <li>Copias: {{ num_instancias }}</li>
+            <li>Copias disponibles: {{ num_instancias_disponibles }}</li>
+            <li>Autores: {{ num_autores }}</li>
+        </ul>
+    </div>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>
