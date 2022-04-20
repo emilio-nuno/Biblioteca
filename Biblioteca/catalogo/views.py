@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.views import generic
 # Create your views here.
 
 from .models import Libro, Autor, InstanciaLibro, Genero
@@ -24,3 +24,13 @@ def index(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
+class ListaLibros(generic.ListView):
+    model = Libro
+    context_object_name = 'libros'
+    template_name = 'lista_libros.html'
+
+class DetalleLibro(generic.DetailView):
+    model = Libro
+    context_object_name = 'libro'
+    template_name = 'detalle_libro.html'

@@ -56,7 +56,7 @@ class Libro(SafeDeleteModel):
 
     def get_absolute_url(self):
         """Retorna un url para acceder al detalle del registro."""
-        return reverse('book-detail', args=[str(self.id)])
+        return reverse('detalle-libro', args=[str(self.id)])
 
 
 class InstanciaLibro(SafeDeleteModel):
