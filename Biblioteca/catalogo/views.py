@@ -34,3 +34,13 @@ class DetalleLibro(generic.DetailView):
     model = Libro
     context_object_name = 'libro'
     template_name = 'detalle_libro.html'
+
+class ListaAutores(generic.ListView):
+    model = Autor
+    context_object_name = 'autores'
+    template_name = 'lista_autores.html'
+
+class DetalleAutor(generic.DetailView):
+    model = Autor
+    context_object_name = 'autor'
+    template_name = 'detalle_autor.html'
