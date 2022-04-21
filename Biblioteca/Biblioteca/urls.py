@@ -19,9 +19,10 @@ from django.urls import path
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
-
+#TODO: Verificar el proceso de reestablecimiento de contraseña
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='catalogo/', permanent=True)),
     path('catalogo/', include('catalogo.urls')),
+    path('cuentas/', include('django.contrib.auth.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
