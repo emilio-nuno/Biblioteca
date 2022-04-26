@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+  {% if formulario.errors %}
+    <div class="alert alert-danger">
+      {{ formulario.errors }}
+    </div>
+  {% endif %}
+  <h1>Renueva: {{ instancia.libro.titulo }}</h1>
+  <p>Prestatario: {{ instancia.prestatario }}</p>
+  <p{% if instancia.esta_atrasado %} class="text-danger"{% endif %}> Due date: {{ instancia.fecha_entrega }}</p>
+
+  <form action="" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+    {{ formulario.fecha_renovacion }}
+      <button type="submit" class="btn btn-primary">Renovar</button>
+    </div>
+  </form>
+{% endblock %}

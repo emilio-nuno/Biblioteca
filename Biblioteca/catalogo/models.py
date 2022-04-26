@@ -7,7 +7,16 @@ from datetime import date
 from safedelete.models import SafeDeleteModel
 
 #TODO: Arreglar el bug donde la instancia de libro no deja eliminar el libro aunque se encuentre la instanca eliminada
-class Autor(SafeDeleteModel):
+
+class Timestamp(models.Model):
+    """Un modelo abstracto el cual contiene los campos de fecha de creacion y actualizacion"""
+    creado_en = models.DateTimeField(auto_now_add=True)
+    editado_en = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Autor(SafeDeleteModel, Timestamp):
     """Model representing an author."""
 
     primer_nombre = models.CharField(max_length=100)
@@ -26,7 +35,7 @@ class Autor(SafeDeleteModel):
         """Cadena que representa al objeto."""
         return f'{self.apellido}, {self.primer_nombre}'
 
-class Genero(SafeDeleteModel):
+class Genero(SafeDeleteModel, Timestamp):
     """Un modelo que representa el género de un libro."""
 
     nombre = models.CharField(max_length=200, help_text='Inserta un género de libro (e.g. Ciencia Ficción)')
@@ -36,7 +45,7 @@ class Genero(SafeDeleteModel):
         return self.nombre
 
 
-class Libro(SafeDeleteModel):
+class Libro(SafeDeleteModel, Timestamp):
     """Modelo que representa a un libro (pero no una copia específica)."""
     _safedelete_policy = safedelete.models.SOFT_DELETE_CASCADE
 
@@ -59,7 +68,7 @@ class Libro(SafeDeleteModel):
         return reverse('detalle-libro', args=[str(self.id)])
 
 
-class InstanciaLibro(SafeDeleteModel):
+class InstanciaLibro(SafeDeleteModel, Timestamp):
     """Modelo que representa una copia específica de un libro (e.g. que puede ser prestado de la biblioteca)."""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,

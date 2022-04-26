@@ -20,6 +20,7 @@ from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
 #TODO: Verificar el proceso de reestablecimiento de contraseña
+#TODO: Checar si se puede modificar el nombre de el url de la app de cuenta de django de accounts a cuentas
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='catalogo/', permanent=True)),
