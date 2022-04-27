@@ -21,6 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 #TODO: Verificar el proceso de reestablecimiento de contraseña
 #TODO: Checar si se puede modificar el nombre de el url de la app de cuenta de django de accounts a cuentas
+#TODO: Usar formularios de bootstrap para formulario de inicio de sesion
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='catalogo/', permanent=True)),

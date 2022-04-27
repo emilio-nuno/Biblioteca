@@ -8,5 +8,6 @@ urlpatterns = [
     path('autores/', views.ListaAutores.as_view(), name='autores'),
     path('autores/<int:pk>/', views.DetalleAutor.as_view(), name='detalle-autor'),
     path('mislibros/', views.ListaLibrosPrestatario.as_view(), name='mis-prestamos'),
+    path('prestados/', views.ListaLibrosPrestados.as_view(), name='todos-prestamos'),
     path('libros/<uuid:pk>/renovar', views.renovar_libro_bibliotecario, name='renovar-libro-bibliotecario'),
 ]

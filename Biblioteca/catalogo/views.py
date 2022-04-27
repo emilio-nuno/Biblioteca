@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 # Create your views here.
 from .forms import FormularioRenovacionLibro
 from .models import Libro, Autor, InstanciaLibro, Genero
@@ -61,6 +61,17 @@ class ListaLibrosPrestatario(LoginRequiredMixin, generic.ListView):
         """Devuelve los libros prestados al usuario actual."""
         return InstanciaLibro.objects.filter(prestatario=self.request.user).order_by('fecha_entrega')
 
+class ListaLibrosPrestados(PermissionRequiredMixin, generic.ListView):
+    """Vista genérica basada en clases que enumera libros prestados en general."""
+    model = InstanciaLibro
+    permission_required = 'catalogo.puede_marcar_retornado'
+    context_object_name = 'libros'
+    template_name = 'lista_libros_prestados.html'
+
+    def get_queryset(self):
+        """Devuelve los libros prestados al usuario actual."""
+        return InstanciaLibro.objects.filter(estado__exact='p').order_by('fecha_entrega')
+
 @login_required
 @permission_required('catalogo.puede_marcar_retornado', raise_exception=True)
 def renovar_libro_bibliotecario(request, pk):
@@ -73,7 +84,7 @@ def renovar_libro_bibliotecario(request, pk):
             instancia.fecha_entrega = formulario.cleaned_data['fecha_renovacion']
             instancia.save()
 
-            return HttpResponseRedirect(reverse('mis-prestamos'))
+            return HttpResponseRedirect(reverse('todos-prestamos'))
         else:
             print(formulario.errors)
     else:
