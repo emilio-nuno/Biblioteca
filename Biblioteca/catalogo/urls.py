@@ -10,4 +10,5 @@ urlpatterns = [
     path('mislibros/', views.ListaLibrosPrestatario.as_view(), name='mis-prestamos'),
     path('prestados/', views.ListaLibrosPrestados.as_view(), name='todos-prestamos'),
     path('libros/<uuid:pk>/renovar', views.renovar_libro_bibliotecario, name='renovar-libro-bibliotecario'),
+    path('disponibles/', views.consulta_libros_disponibles, name='libros-disponibles'),
 ]

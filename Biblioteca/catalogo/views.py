@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import JsonResponse
 # Create your views here.
 from .forms import FormularioRenovacionLibro
 from .models import Libro, Autor, InstanciaLibro, Genero
@@ -94,4 +95,20 @@ def renovar_libro_bibliotecario(request, pk):
     context = {'formulario': formulario, 'instancia': instancia}
     return render(request, 'renovar_libro_bibliotecario.html', context)
 
+def instancia_libro_to_dict(instancia):
+    """Function to turn an InstanciaLibro object into a dictionary"""
+    titulo = instancia.libro.titulo
+    id = instancia.id
 
+    return {'titulo': titulo,
+            'id': id}
+
+"""Function to turn a list of InstanciaLibro objects into a list of dictionaries"""
+
+def consulta_libros_disponibles(request):
+    """Vista para consultar libros disponibles."""
+
+    libros = InstanciaLibro.objects.filter(estado__exact='d')
+    libros_dict = [instancia_libro_to_dict(libro) for libro in libros]
+    respuesta = {'libros': libros_dict}
+    return JsonResponse(respuesta)
