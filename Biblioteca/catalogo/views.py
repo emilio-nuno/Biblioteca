@@ -7,9 +7,24 @@ from django.urls import reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import JsonResponse
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Create your views here.
-from .forms import FormularioRenovacionLibro
+from .forms import FormularioRenovacionLibro, FormularioInstanciaLibro
 from .models import Libro, Autor, InstanciaLibro, Genero
+
+class CrearLibro(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    form_class = FormularioInstanciaLibro
+    permission_required = 'catalogo.add_instancialibro'
+    template_name = 'crear_libro.html'
+
+    def get_success_url(self):
+        return reverse('detalle-libro', kwargs={'pk': self.object.libro.id})
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.object.fecha_entrega = datetime.date.today() + datetime.timedelta(weeks=3)
+        self.object.save()
+        return response
 
 def index(request):
     """Vista de página principal"""
