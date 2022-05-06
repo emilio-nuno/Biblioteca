@@ -3,14 +3,13 @@
 {% block contenido %}
   <h1 class="text-center">Da de alta un nuevo libro</h1>
 
+<!-- TODO: Checar si se puede ajustar base_formulario para incluir el contenedor flex dentro de este archivo -->
 <div class="d-flex justify-content-center">
   {% if form.errors %}
     <div class="alert alert-danger">
       {{ form.errors }}
     </div>
   {% endif %}
-  {% include "base_formulario.html" %}
-  {% block contenido_formulario %}
     <form action="" method="post">
     {% csrf_token %}
     <div class="form-group">
@@ -25,6 +24,5 @@
       <button type="submit" class="btn btn-primary">Crear Libro</button>
     </div>
   </form>
-  {% endblock %}
 </div>
 {% endblock %}
