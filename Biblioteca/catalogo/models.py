@@ -50,14 +50,12 @@ class Libro(SafeDeleteModel, Timestamp):
     _safedelete_policy = safedelete.models.SOFT_DELETE_CASCADE
 
     titulo = models.CharField(max_length=200)
-
     autor = models.ForeignKey(Autor, on_delete=models.SET_NULL, null=True)
-
     resumen = models.TextField(max_length=1000, help_text='Inserta una breve descripción del libro')
     isbn = models.CharField('ISBN', max_length=13, unique=True,
                             help_text='13 caracteres <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
-
     genero = models.ManyToManyField(Genero, help_text='Selecciona uno o varios géneros para este libro')
+    portada = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         """Cadena que representa al modelo."""

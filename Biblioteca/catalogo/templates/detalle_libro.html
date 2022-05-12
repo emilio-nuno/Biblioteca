@@ -1,32 +1,39 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block contenido %}
-  <h1>Titulo: {{ libro.titulo }}</h1>
-  <p><strong>Autor:</strong> <a href="{{ libro.autor.get_absolute_url }}">{{ libro.autor }}</a></p>
-  <p><strong>Resumen:</strong> {{ libro.resumen }}</p>
-  <p><strong>ISBN:</strong> {{ libro.isbn }}</p>
-  <p><strong>Género:</strong> {{ libro.genero.all|join:", " }}</p>
+<h1>Titulo: {{ libro.titulo }}</h1>
+<p><strong>Autor:</strong> <a href="{{ libro.autor.get_absolute_url }}">{{ libro.autor }}</a></p>
+{% if not libro.portada %}
+<img src="{% static '/portadas/no-disponible.png' %}" alt="Portada del Libro">
+{% else %}
+<img src="{{ libro.portada.url }}" alt="Portada del Libro">
+{% endif %}
+<a href="{% url 'cambiar-imagen-libro' libro.id %}">Editar Foto</a>
+<p><strong>Resumen:</strong> {{ libro.resumen }}</p>
+<p><strong>ISBN:</strong> {{ libro.isbn }}</p>
+<p><strong>Género:</strong> {{ libro.genero.all|join:", " }}</p>
 
-  <div style="margin-left:20px;margin-top:20px">
+<div style="margin-left:20px;margin-top:20px">
     <h4>Copias</h4>
 
     {% for copia in libro.instancialibro_set.all %}
-      <hr>
-      <p class="{% if copia.estado == 'd' %}text-success{% elif copia.estado == 'm' %}text-danger{% else %}text-warning{% endif %}">
+    <hr>
+    <p class="{% if copia.estado == 'd' %}text-success{% elif copia.estado == 'm' %}text-danger{% else %}text-warning{% endif %}">
         {{ copia.get_estado_display }}
-      </p>
-      {% if copia.estado != 'd' %}
-        <p><strong>Retornar en:</strong> {{ copia.fecha_entrega }}</p>
-      {% endif %}
-      <p><strong>Sello:</strong> {{ copia.sello }}</p>
-      <p class="text-muted"><strong>Id:</strong> {{ copia.id }}</p>
+    </p>
+    {% if copia.estado != 'd' %}
+    <p><strong>Retornar en:</strong> {{ copia.fecha_entrega }}</p>
+    {% endif %}
+    <p><strong>Sello:</strong> {{ copia.sello }}</p>
+    <p class="text-muted"><strong>Id:</strong> {{ copia.id }}</p>
     {% if perms.catalogo.puede_marcar_retornado %}
-        <a href="{% url 'actualizar-libro' copia.id %}">Actualizar</a>
-        <div class="vr"></div>
+    <a href="{% url 'actualizar-libro' copia.id %}">Actualizar</a>
+    <div class="vr"></div>
     {% endif %}
     {% if perms.catalogo.puede_marcar_retornado %}
-        <a href="{% url 'eliminar-libro' copia.id %}">Eliminar</a>
+    <a href="{% url 'eliminar-libro' copia.id %}">Eliminar</a>
     {% endif %}
     {% endfor %}
-  </div>
+</div>
 {% endblock %}

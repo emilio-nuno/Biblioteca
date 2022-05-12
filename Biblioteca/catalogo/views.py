@@ -12,6 +12,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import FormularioRenovacionLibro, FormularioCrearInstanciaLibro, FormularioEditarInstanciaLibro
 from .models import Libro, Autor, InstanciaLibro, Genero
 
+# TODO: Checar si hay una manera de saber que un usuario pertenece a un grupo en vez de usar catalogo.puede_marcar_retornado
+
 class CrearLibro(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     form_class = FormularioCrearInstanciaLibro
     permission_required = 'catalogo.add_instancialibro'
@@ -143,3 +145,10 @@ def consulta_libros_disponibles(request):
     libros_dict = [instancia_libro_to_dict(libro) for libro in libros]
     respuesta = {'libros': libros_dict}
     return JsonResponse(respuesta)
+
+class CambiarImagenLibro(LoginRequiredMixin, PermissionRequiredMixin, generic.UpdateView):
+    """Vista para editar la imagen de un libro."""
+    model = Libro
+    fields = ['portada']
+    permission_required = 'catalogo.puede_marcar_retornado.'
+    template_name = 'editar_imagen_libro.html'
