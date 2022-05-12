@@ -22,6 +22,7 @@
                     <li class="nav-item"><a class="nav-link active" href="{% url 'index' %}">Página Principal</a></li>
                     <li class="nav-item"><a class="nav-link active" href="{% url 'libros' %}">Todos los Libros</a></li>
                     <li class="nav-item"><a class="nav-link active" href="{% url 'autores' %}">Todos los Autores</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'correo' %}">Mandar Correo</a></li>
                     {% if user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link active" href="{% url 'mis-prestamos' %}">Mis Préstamos</a></li>
                     <li class="nav-item"><a class="nav-link active" href="{% url 'logout' %}">Cerrar Sesión</a></li>

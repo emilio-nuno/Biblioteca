@@ -1,6 +1,7 @@
 import datetime
 
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -41,8 +42,9 @@ class EliminarLibro(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = InstanciaLibro
     permission_required = 'catalogo.delete_instancialibro'
     template_name = 'eliminar_libro.html'
+
     def get_success_url(self):
-        return reverse('libros')
+        return reverse('detalle-libro', kwargs={'pk': self.object.libro.id})
 
 def index(request):
     """Vista de página principal"""
@@ -145,6 +147,19 @@ def consulta_libros_disponibles(request):
     libros_dict = [instancia_libro_to_dict(libro) for libro in libros]
     respuesta = {'libros': libros_dict}
     return JsonResponse(respuesta)
+
+def mandar_correo(request):
+    """Vista para mandar correos al usuario."""
+    if request.user.is_authenticated:
+        cantidad_libros = InstanciaLibro.objects.filter(prestatario=request.user).count()
+        send_mail(
+            f'Información de préstamo',
+            f'Hola, {request.user.username}!\nQueremos recordarte que tienes {cantidad_libros} préstamo pendiente de entrega.',
+            'emilio.nuno@alumnos.udg.mx',
+            [f'{request.user.email}'],
+            fail_silently=False,
+        )
+    return HttpResponseRedirect(reverse('index'))
 
 class CambiarImagenLibro(LoginRequiredMixin, PermissionRequiredMixin, generic.UpdateView):
     """Vista para editar la imagen de un libro."""
