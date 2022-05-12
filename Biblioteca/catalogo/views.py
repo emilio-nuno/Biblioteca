@@ -9,11 +9,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.http import JsonResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # Create your views here.
-from .forms import FormularioRenovacionLibro, FormularioInstanciaLibro
+from .forms import FormularioRenovacionLibro, FormularioCrearInstanciaLibro, FormularioEditarInstanciaLibro
 from .models import Libro, Autor, InstanciaLibro, Genero
 
 class CrearLibro(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    form_class = FormularioInstanciaLibro
+    form_class = FormularioCrearInstanciaLibro
     permission_required = 'catalogo.add_instancialibro'
     template_name = 'crear_libro.html'
 
@@ -25,6 +25,22 @@ class CrearLibro(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         self.object.fecha_entrega = datetime.date.today() + datetime.timedelta(weeks=3)
         self.object.save()
         return response
+
+class ActualizarLibro(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = InstanciaLibro
+    form_class = FormularioEditarInstanciaLibro
+    permission_required = 'catalogo.change_instancialibro'
+    template_name = 'actualizar_libro.html'
+
+    def get_success_url(self):
+        return reverse('detalle-libro', kwargs={'pk': self.object.libro.id})
+
+class EliminarLibro(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = InstanciaLibro
+    permission_required = 'catalogo.delete_instancialibro'
+    template_name = 'eliminar_libro.html'
+    def get_success_url(self):
+        return reverse('libros')
 
 def index(request):
     """Vista de página principal"""

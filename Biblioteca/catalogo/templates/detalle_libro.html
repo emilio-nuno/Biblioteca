@@ -20,6 +20,13 @@
       {% endif %}
       <p><strong>Sello:</strong> {{ copia.sello }}</p>
       <p class="text-muted"><strong>Id:</strong> {{ copia.id }}</p>
+    {% if perms.catalogo.puede_marcar_retornado %}
+        <a href="{% url 'actualizar-libro' copia.id %}">Actualizar</a>
+        <div class="vr"></div>
+    {% endif %}
+    {% if perms.catalogo.puede_marcar_retornado %}
+        <a href="{% url 'eliminar-libro' copia.id %}">Eliminar</a>
+    {% endif %}
     {% endfor %}
   </div>
 {% endblock %}

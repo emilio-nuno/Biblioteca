@@ -36,3 +36,23 @@ class InstanciaLibroTestCase(TestCase):
         autor.delete()
         self.assertEqual(libro.autor, autor)
         self.assertIn(libro.autor, Autor.objects.deleted_only())
+
+    def test_timestamp_libro(self):
+        libro = Libro.objects.get(titulo='El señor de los anillos')
+        instancia = InstanciaLibro.objects.get(libro=libro)
+
+        timestamp_editado_original = instancia.editado_en
+        timestamp_creado_original = instancia.creado_en
+
+        instancia.sello = 'Sello'
+        instancia.save()
+
+        timestamp_editado_nuevo = instancia.editado_en
+        timestamp_creado_nuevo = instancia.creado_en
+
+        self.assertNotEqual(timestamp_editado_original, timestamp_editado_nuevo)
+        self.assertEqual(timestamp_creado_original, timestamp_creado_nuevo)
+
+    def test_mayusculas_titulo(self):
+        nueva_instancia = InstanciaLibro.objects.create(sello='prueba')
+        self.assertEqual(nueva_instancia.sello, 'Prueba')

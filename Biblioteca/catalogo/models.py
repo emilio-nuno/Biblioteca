@@ -115,3 +115,10 @@ class InstanciaLibro(SafeDeleteModel, Timestamp):
         if self.fecha_entrega and date.today() > self.fecha_entrega:
             return True
         return False
+
+    def save(self, *args, **kwargs):
+        """
+        Función que usaremos como mutator para cambiar el formato de un campo al guardar.
+        """
+        self.sello = self.sello.title()
+        super().save(*args, **kwargs)

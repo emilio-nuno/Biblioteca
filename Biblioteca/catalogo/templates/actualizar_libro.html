@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+  <h1 class="text-center">Actualiza un libro</h1>
+
+<!-- TODO: Checar si se puede ajustar base_formulario para incluir el contenedor flex dentro de este archivo -->
+<div class="d-flex justify-content-center">
+  {% if form.errors %}
+    <div class="alert alert-danger">
+      {{ form.errors }}
+    </div>
+  {% endif %}
+    <form action="" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <div class="mb-2">
+        {{ form.libro.label_tag  }}
+        {{ form.libro }}
+        </div>
+    <div class="mb-2">
+      {{ form.sello.label_tag  }}
+        {{ form.sello }}
+        </div>
+      <button type="submit" class="btn btn-primary">Actualizar Libro</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
