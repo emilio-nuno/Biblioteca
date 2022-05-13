@@ -6,9 +6,6 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from .models import InstanciaLibro
 
-#TODO: Checar si puedo eliminar las clases de libro y solo usar las vistas genéricas
-#TODO: Actualizar la información en las plantillas del CRUD
-
 class FormularioRenovacionLibro(forms.Form):
     fecha_renovacion = forms.DateField(help_text="Ingrese una fecha entre ahora y 4 semanas (predeterminado 3).")
 

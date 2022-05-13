@@ -1,3 +1,5 @@
+import datetime
+
 from django.test import TestCase
 
 # Create your tests here.
@@ -56,3 +58,10 @@ class InstanciaLibroTestCase(TestCase):
     def test_mayusculas_titulo(self):
         nueva_instancia = InstanciaLibro.objects.create(sello='prueba')
         self.assertEqual(nueva_instancia.sello, 'Prueba')
+
+    def test_libro_atrasado(self):
+        libro = Libro.objects.get(titulo='El señor de los anillos')
+        instancia = InstanciaLibro.objects.get(libro=libro)
+        instancia.fecha_entrega = datetime.datetime.strptime('2019-01-01', '%Y-%m-%d').date()
+        instancia.save()
+        self.assertTrue(instancia.esta_atrasado)
